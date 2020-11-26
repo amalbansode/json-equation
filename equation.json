@@ -1,15 +1,36 @@
 {
-  "sum": {
-    "x": {
-      "pow_2": 3,
-      "pow_1": 0.7
+  "pieces": [
+    {
+      "lower_bound": -2.0,
+      "upper_bound": 2.0,
+      "numerator": {
+        "powers": [0, 1, 2, 3, 4],
+        "coefficients": [0.5, -3.2, 4.8, 6.7, 0.1]
+      }
     },
-    "y": {
-      "pow_1": 19
+    {
+      "lower_bound": -8.0,
+      "upper_bound": -2.0,
+      "numerator": {
+        "powers": [0, 1, 2],
+        "coefficients": [0.002, 7.8, 3]
+      }
     },
-    "z": {
-      "pow_1": 2
+    {
+      "lower_bound": 2.0,
+      "upper_bound": 8.0,
+      "numerator": {
+        "powers": [0, 2, 5],
+        "coefficients": [0.03, -93, 2]
+      }
     },
-    "constant": 10
-  }
+    {
+      "lower_bound": 8.0,
+      "upper_bound": NaN,
+      "numerator": {
+        "powers": [0],
+        "coefficients": [33]
+      }
+    }
+  ]
 }
