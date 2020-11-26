@@ -10,14 +10,26 @@
 #include <fstream>
 #include <string>
 
+using nlohmann::json;
+
 class Equation {
 public:
-  nlohmann::json eq;
+  json eq;
 
-  Equation (std::istream& is) : eq(is) { }
+  Equation (std::istream& is) {
+    is >> eq;
+  }
 
-  double calculate (const std::vector<double>& vars) const {
+  double handle_pieces (const json& ps, const double var) const {
 
+  }
+
+  double calculate (const double var) const {
+    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
+      if (it.key() == "pieces") {
+        handle_pieces(it.value(), var);
+      }
+    }
     return 0;
   }
 };
