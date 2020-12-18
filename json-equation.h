@@ -12,6 +12,17 @@
 
 using nlohmann::json;
 
+/*
+ * This header-only library reads in a templated mathematical function defined
+ * in a JSON file, and is able to solve the function given an input value for a
+ * variable member.
+ * This is currently designed to support polynomials using a single
+ * variable for the sake of simplicity. I do have some ideas for how we can
+ * support multiple variables, trig functions, and other complex operations
+ * but this is unnecessary at the moment.
+ * Amal Bansode, 2020. MIT License.
+ */
+
 class Equation {
 public:
   json eq;
@@ -42,6 +53,8 @@ public:
     bool upper_bound_set = false;
   };
 
+  // Accept a JSON object following the "polyterm" schema and parse this for
+  // inclusion in piece term.
   MonoPolyTerm handle_monopolyterm (const json& mpt_json) const {
     MonoPolyTerm mpt;
     const auto& powers_attr = mpt_json.find("powers");
@@ -51,6 +64,8 @@ public:
     return mpt;
   }
 
+  // Accept a JSON object following the "piece" schema and parse this for
+  // storage in the vector of equation pieces.
   double handle_pieces (const json& ps, const double var) const {
     std::vector<Piece> pieces_vec(ps.size());
     size_t piece_idx = 0;
@@ -80,6 +95,7 @@ public:
     ++piece_idx;
   }
 
+  // Solve the equation for a given var value
   double calculate (const double var) const {
     for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
       if (it.key() == "pieces") {
