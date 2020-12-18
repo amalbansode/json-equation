@@ -25,10 +25,46 @@ using nlohmann::json;
 
 class Equation {
 public:
-  json eq;
-
   Equation (std::istream& is) {
-    is >> eq;
+    is >> equation_json;
+    build_equation();
+  }
+
+  // Accept a JSON object following the "polyterm" schema and parse this for
+  // inclusion in piece term.
+  MonoPolyTerm handle_monopolyterm (const json& mpt_json) const {
+    MonoPolyTerm mpt;
+    const auto& powers_attr = mpt_json.find("powers");
+    mpt.powers = powers_attr->get<std::vector<double> >();
+    const auto& coefficients_attr = mpt_json.find("coefficients");
+    mpt.coefficients = coefficients_attr->get<std::vector<double> >();
+    return mpt;
+  }
+
+  // Solve the equation for a given var value
+  double calculate (const double var) const {
+    (void) var;
+    return 0;
+  }
+
+private:
+  // Accept a JSON object following the "piece" schema and parse this for
+  // storage in the vector of equation pieces.
+  double build_piece (const json& ps) {
+    (void) ps;
+    return 0;
+  }
+
+  void build_equation () {
+    bool pieces_found = false;
+    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
+      if (it.key() == "pieces") {
+        pieces_found = true;
+        build_piece(it.value());
+      }
+    }
+    if (!pieces_found)
+      throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
   }
 
   struct MonoPolyTerm {
@@ -53,57 +89,8 @@ public:
     bool upper_bound_set = false;
   };
 
-  // Accept a JSON object following the "polyterm" schema and parse this for
-  // inclusion in piece term.
-  MonoPolyTerm handle_monopolyterm (const json& mpt_json) const {
-    MonoPolyTerm mpt;
-    const auto& powers_attr = mpt_json.find("powers");
-    mpt.powers = powers_attr->get<std::vector<double> >();
-    const auto& coefficients_attr = mpt_json.find("coefficients");
-    mpt.coefficients = coefficients_attr->get<std::vector<double> >();
-    return mpt;
-  }
-
-  // Accept a JSON object following the "piece" schema and parse this for
-  // storage in the vector of equation pieces.
-  double handle_pieces (const json& ps, const double var) const {
-    std::vector<Piece> pieces_vec(ps.size());
-    size_t piece_idx = 0;
-    for (json::iterator pieces_it = ps.begin(); pieces_it != ps.end(); ++pieces_it) {
-      for (json::iterator piece_attr = ps.begin(); piece_attr != ps.end(); ++piece_attr) {
-        if (piece_attr.key() == "lower_bound") {
-          pieces_vec[piece_idx].lower_bound = piece_attr.value();
-          pieces_vec[piece_idx].lower_bound_set = true;
-        } else if (piece_attr.key() == "upper_bound") {
-          pieces_vec[piece_idx].upper_bound = piece_attr.value();
-          pieces_vec[piece_idx].upper_bound_set = true;
-        } else if (pieces_vec[piece_idx].lower_bound_set &&
-                   pieces_vec[piece_idx].upper_bound_set) {
-          if (pieces_vec[piece_idx].lower_bound <= var &&
-              var <= pieces_vec[piece_idx].upper_bound) {
-            if (piece_attr.key() == "numerator") {
-              pieces_vec[piece_idx].numerator = handle_monopolyterm(piece_attr.value());
-            } else if (piece_attr.key() == "denominator") {
-              pieces_vec[piece_idx].denominator = handle_monopolyterm(piece_attr.value());
-            }
-          } else { // no within bounds, so we do not care
-            break;
-          }
-        }
-      }
-    }
-    ++piece_idx;
-  }
-
-  // Solve the equation for a given var value
-  double calculate (const double var) const {
-    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
-      if (it.key() == "pieces") {
-        handle_pieces(it.value(), var);
-      }
-    }
-    return 0;
-  }
+  std::vector<Piece> equation_obj;
+  json equation_json;
 };
 
 #endif //JSON_EQUATION_JSON_EQUATION_H
