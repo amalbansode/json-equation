@@ -2,7 +2,9 @@
   "pieces": [
     {
       "lower_bound": -2.0,
+      "lb_inclusive": true,
       "upper_bound": 2.0,
+      "ub_inclusive": false,
       "numerator": {
         "powers": [0, 1, 2, 3, 4],
         "coefficients": [0.5, -3.2, 4.8, 6.7, 0.1]
@@ -10,23 +12,37 @@
     },
     {
       "lower_bound": -8.0,
+      "lb_inclusive": true,
       "upper_bound": -2.0,
+      "ub_inclusive": false,
       "numerator": {
         "powers": [0, 1, 2],
         "coefficients": [0.002, 7.8, 3]
+      },
+      "denominator": {
+        "powers": [0, 2],
+        "coefficients": [33, 4.2]
       }
     },
     {
       "lower_bound": 2.0,
+      "lb_inclusive": true,
       "upper_bound": 8.0,
+      "ub_inclusive": true,
       "numerator": {
         "powers": [0, 2, 5],
         "coefficients": [0.03, -93, 2]
+      },
+      "denominator": {
+        "powers": [0, 1],
+        "coefficients": [90, -43]
       }
     },
     {
       "lower_bound": 8.0,
-      "upper_bound": NaN,
+      "lb_inclusive": false,
+      "upper_bound": 1080.0,
+      "ub_inclusive": true,
       "numerator": {
         "powers": [0],
         "coefficients": [33]
