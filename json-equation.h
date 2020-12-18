@@ -26,10 +26,18 @@ public:
   };
 
   struct Piece {
+    // parallel double vectors with corresponding variable power and coefficient
     MonoPolyTerm numerator;
     MonoPolyTerm denominator;
+    // All equations are piece-wise at the moment for clarity's sake
+    // (i.e. be as explicit as possible)
     double lower_bound = 0;
     double upper_bound = 0;
+    // Bounds are inclusive by default
+    bool lower_bound_inclusive = true;
+    bool upper_bound_inclusive = true;
+    // Bounds *have* to be defined as real numbers at the moment since I'm not
+    // sure how to numerically represent infinities in JSON.
     bool lower_bound_set = false;
     bool upper_bound_set = false;
   };
