@@ -30,17 +30,6 @@ public:
     build_equation();
   }
 
-  // Accept a JSON object following the "polyterm" schema and parse this for
-  // inclusion in piece term.
-  MonoPolyTerm handle_monopolyterm (const json& mpt_json) const {
-    MonoPolyTerm mpt;
-    const auto& powers_attr = mpt_json.find("powers");
-    mpt.powers = powers_attr->get<std::vector<double> >();
-    const auto& coefficients_attr = mpt_json.find("coefficients");
-    mpt.coefficients = coefficients_attr->get<std::vector<double> >();
-    return mpt;
-  }
-
   // Solve the equation for a given var value
   double calculate (const double var) const {
     (void) var;
@@ -48,6 +37,12 @@ public:
   }
 
 private:
+  // Accept a JSON object following the "polyterm" schema and parse this for
+  // inclusion in piece term.
+  MonoPolyTerm read_monopolyterm (const json& mpt_json) const {
+    (void) mpt_json;
+  }
+
   // Accept a JSON object following the "piece" schema and parse this for
   // storage in the vector of equation pieces.
   double build_piece (const json& ps) {
