@@ -37,31 +37,6 @@ public:
   }
 
 private:
-  // Accept a JSON object following the "polyterm" schema and parse this for
-  // inclusion in piece term.
-  MonoPolyTerm read_monopolyterm (const json& mpt_json) const {
-    (void) mpt_json;
-  }
-
-  // Accept a JSON object following the "piece" schema and parse this for
-  // storage in the vector of equation pieces.
-  double build_piece (const json& ps) {
-    (void) ps;
-    return 0;
-  }
-
-  void build_equation () {
-    bool pieces_found = false;
-    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
-      if (it.key() == "pieces") {
-        pieces_found = true;
-        build_piece(it.value());
-      }
-    }
-    if (!pieces_found)
-      throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
-  }
-
   struct MonoPolyTerm {
     std::vector<double> powers;
     std::vector<double> coefficients;
@@ -83,6 +58,35 @@ private:
     bool lower_bound_set = false;
     bool upper_bound_set = false;
   };
+
+  // Accept a JSON object following the "polyterm" schema and parse this for
+  // inclusion in piece term.
+  static MonoPolyTerm read_monopolyterm (const json& mpt_json) {
+    MonoPolyTerm mpt;
+    mpt.powers = mpt_json.at("powers").get<std::vector<double> >();
+    mpt.coefficients = mpt_json.at("coefficients").get<std::vector<double> >();
+
+    return mpt;
+  }
+
+  // Accept a JSON object following the "piece" schema and parse this for
+  // storage in the vector of equation pieces.
+  double build_piece (const json& ps) {
+    (void) ps;
+    return 0;
+  }
+
+  void build_equation () {
+    bool pieces_found = false;
+    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
+      if (it.key() == "pieces") {
+        pieces_found = true;
+        build_piece(it.value());
+      }
+    }
+    if (!pieces_found)
+      throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
+  }
 
   std::vector<Piece> equation_obj;
   json equation_json;
