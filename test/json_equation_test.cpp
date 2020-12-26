@@ -9,5 +9,5 @@ TEST_CASE( "Simple Equation Computation", "[equation]" ) {
   ifstream infile("../test/equation.json");
   Equation equation(infile);
 
-  REQUIRE( equation.calculate(0) == 0 );
+  REQUIRE(equation.calculate(0) == 0.5);
 }
