@@ -83,8 +83,8 @@ private:
   // Accept a JSON object following the "piece" schema and parse this for
   // storage in the vector of equation pieces.
   void build_piece (const json& ps) {
-    equation_obj.reserve(ps.size());
-    for (size_t i = 0; i < equation_obj.size(); ++i) {
+    equation_obj.resize(ps.size());
+    for (size_t i = 0; i < ps.size(); ++i) {
       auto& piece_obj = equation_obj[i];
       const auto& piece_json = ps[i];
 
