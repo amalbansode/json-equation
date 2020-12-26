@@ -71,21 +71,58 @@ private:
 
   // Accept a JSON object following the "piece" schema and parse this for
   // storage in the vector of equation pieces.
-  double build_piece (const json& ps) {
-    (void) ps;
-    return 0;
+  void build_piece (const json& ps) {
+    equation_obj.reserve(ps.size());
+    for (size_t i = 0; i < equation_obj.size(); ++i) {
+      auto& piece_obj = equation_obj[i];
+      const auto& piece_json = ps[i];
+
+      if (piece_json.find("lower_bound") != piece_json.end())
+        piece_obj.lower_bound = piece_json.find("lower_bound").value();
+      else
+        throw std::runtime_error("[Error] Piece does not specify lower_bound.");
+
+      if (piece_json.find("lb_inclusive") != piece_json.end())
+        piece_obj.lower_bound_inclusive = piece_json.find("lb_inclusive").value();
+      else
+        throw std::runtime_error("[Error] Piece does not specify lb_inclusive.");
+
+      if (piece_json.find("upper_bound") != piece_json.end())
+        piece_obj.upper_bound = piece_json.find("upper_bound").value();
+      else
+        throw std::runtime_error("[Error] Piece does not specify upper_bound.");
+
+      if (piece_json.find("ub_inclusive") != piece_json.end())
+        piece_obj.upper_bound_inclusive = piece_json.find("ub_inclusive").value();
+      else
+        throw std::runtime_error("[Error] Piece does not specify ub_inclusive.");
+
+      if (piece_json.find("numerator") != piece_json.end())
+        piece_obj.numerator = read_monopolyterm(piece_json.find("numerator").value());
+      else {
+        std::cout
+            << "[Warning] Piece does not specify numerator, setting to 1.";
+        piece_obj.numerator = {{0}, {1}};
+      }
+
+      if (piece_json.find("denominator") != piece_json.end())
+        piece_obj.denominator = read_monopolyterm(piece_json.find("denominator").value());
+      else {
+        std::cout
+            << "[Warning] Piece does not specify denominator, setting to 1.";
+        piece_obj.denominator = {{0}, {1}};
+      }
+
+    }
   }
 
   void build_equation () {
     bool pieces_found = false;
-    for (json::iterator it = eq.begin(); it != eq.end(); ++it) {
-      if (it.key() == "pieces") {
-        pieces_found = true;
-        build_piece(it.value());
-      }
-    }
-    if (!pieces_found)
+    if (equation_json.find("pieces") != equation_json.end())
+      build_piece(equation_json.find("pieces").value());
+    else {
       throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
+    }
   }
 
   std::vector<Piece> equation_obj;
