@@ -117,7 +117,6 @@ private:
   }
 
   void build_equation () {
-    bool pieces_found = false;
     if (equation_json.find("pieces") != equation_json.end())
       build_piece(equation_json.find("pieces").value());
     else {
