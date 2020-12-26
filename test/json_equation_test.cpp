@@ -10,4 +10,6 @@ TEST_CASE( "Simple Equation Computation", "[equation]" ) {
   Equation equation(infile);
 
   REQUIRE(equation.calculate(0) == 0.5);
+  REQUIRE(equation.calculate(-2) == -25.9);
+  REQUIRE(equation.calculate(2) == -76.9925);
 }
