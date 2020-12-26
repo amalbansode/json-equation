@@ -91,28 +91,28 @@ private:
       if (piece_json.find("lower_bound") != piece_json.end())
         piece_obj.lower_bound = piece_json.find("lower_bound").value();
       else
-        throw std::runtime_error("[Error] Piece does not specify lower_bound.");
+        throw std::runtime_error("[Error] Piece does not specify lower_bound.\n");
 
       if (piece_json.find("lb_inclusive") != piece_json.end())
         piece_obj.lower_bound_inclusive = piece_json.find("lb_inclusive").value();
       else
-        throw std::runtime_error("[Error] Piece does not specify lb_inclusive.");
+        throw std::runtime_error("[Error] Piece does not specify lb_inclusive.\n");
 
       if (piece_json.find("upper_bound") != piece_json.end())
         piece_obj.upper_bound = piece_json.find("upper_bound").value();
       else
-        throw std::runtime_error("[Error] Piece does not specify upper_bound.");
+        throw std::runtime_error("[Error] Piece does not specify upper_bound.\n");
 
       if (piece_json.find("ub_inclusive") != piece_json.end())
         piece_obj.upper_bound_inclusive = piece_json.find("ub_inclusive").value();
       else
-        throw std::runtime_error("[Error] Piece does not specify ub_inclusive.");
+        throw std::runtime_error("[Error] Piece does not specify ub_inclusive.\n");
 
       if (piece_json.find("numerator") != piece_json.end())
         piece_obj.numerator = read_monopolyterm(piece_json.find("numerator").value());
       else {
         std::cout
-            << "[Warning] Piece does not specify numerator, setting to 1.";
+            << "[Warning] Piece does not specify numerator, setting to 1.\n";
         piece_obj.numerator = {{0}, {1}};
       }
 
@@ -120,7 +120,7 @@ private:
         piece_obj.denominator = read_monopolyterm(piece_json.find("denominator").value());
       else {
         std::cout
-            << "[Warning] Piece does not specify denominator, setting to 1.";
+            << "[Warning] Piece does not specify denominator, setting to 1.\n";
         piece_obj.denominator = {{0}, {1}};
       }
 
@@ -131,7 +131,7 @@ private:
     if (equation_json.find("pieces") != equation_json.end())
       build_piece(equation_json.find("pieces").value());
     else {
-      throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
+      throw std::runtime_error("[Error] JSON Equation does not contain pieces.\n");
     }
   }
 
@@ -156,7 +156,7 @@ private:
         return piece;
     }
 
-    throw std::runtime_error("[Error] No appropriate bound range found for the variable with value " + std::to_string(var) + "\n");
+    throw std::runtime_error("[Error] No appropriate bound range found for the variable with value " + std::to_string(var) + ".\n");
   }
 
   std::vector<Piece> equation_obj;
