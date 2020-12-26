@@ -32,8 +32,19 @@ public:
 
   // Solve the equation for a given var value
   double calculate (const double var) const {
-    (void) var;
-    return 0;
+    const auto& eqn = get_piece_for_var(var);
+    double numerator_val = 0;
+    double denominator_val = 0;
+
+    for (size_t i = 0; i < eqn.numerator.powers.size(); ++i) {
+      numerator_val += eqn.numerator.coefficients[i] * pow(var, eqn.numerator.powers[i]);
+    }
+
+    for (size_t i = 0; i < eqn.denominator.powers.size(); ++i) {
+      denominator_val += eqn.denominator.coefficients[i] * pow(var, eqn.denominator.powers[i]);
+    }
+
+    return numerator_val / denominator_val;
   }
 
 private:
@@ -122,6 +133,30 @@ private:
     else {
       throw std::runtime_error("[Error] JSON Equation does not contain pieces.");
     }
+  }
+
+  const Piece& get_piece_for_var (const double var) const {
+    bool lb_sat = false;
+    bool ub_sat = false;
+    for (const auto& piece : equation_obj) {
+      lb_sat = false;
+      ub_sat = false;
+
+      if ((piece.lower_bound_inclusive && piece.lower_bound <= var) || piece.lower_bound < var)
+        lb_sat = true;
+      else
+        continue;
+
+      if ((piece.upper_bound_inclusive && var <= piece.upper_bound) || var < piece.upper_bound)
+        ub_sat = true;
+      else
+        continue;
+
+      if (lb_sat && ub_sat)
+        return piece;
+    }
+
+    throw std::runtime_error("[Error] No appropriate bound range found for the variable with value " + std::to_string(var) + "\n");
   }
 
   std::vector<Piece> equation_obj;
