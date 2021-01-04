@@ -30,6 +30,12 @@ public:
     build_equation();
   }
 
+  // TODO should this take care of anything else
+  Equation () { }
+
+  // TODO should this take care of anything else
+  ~Equation () { }
+
   // Solve the equation for a given var value
   double calculate (const double var) const {
     const auto& eqn = get_piece_for_var(var);
