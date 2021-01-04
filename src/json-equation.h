@@ -70,6 +70,24 @@ private:
     bool upper_bound_set = false;
   };
 
+  struct Bound {
+    // All equations are piece-wise at the moment for clarity's sake
+    // (i.e. be as explicit as possible)
+    double lower_bound = 0;
+    double upper_bound = 0;
+    // Bounds are inclusive by default
+    bool lower_bound_inclusive = true;
+    bool upper_bound_inclusive = true;
+  };
+
+
+  class BoundComparator {
+  public:
+    bool operator()(const Bound& lhs, const Bound& rhs) {
+      return false;
+    }
+  };
+
   // Accept a JSON object following the "polyterm" schema and parse this for
   // inclusion in piece term.
   static MonoPolyTerm read_monopolyterm (const json& mpt_json) {
@@ -159,6 +177,7 @@ private:
     throw std::runtime_error("[Error] No appropriate bound range found for the variable with value " + std::to_string(var) + ".\n");
   }
 
+  std::map<Bound, Piece> equation_tree;
   std::vector<Piece> equation_obj;
   json equation_json;
 };
