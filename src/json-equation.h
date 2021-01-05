@@ -9,6 +9,7 @@
 #include <istream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using nlohmann::json;
 
@@ -25,16 +26,30 @@ using nlohmann::json;
 
 class Equation {
 public:
+  Equation () : equation_obj() { }
+
   Equation (std::istream& is) {
+    json equation_json;
     is >> equation_json;
-    build_equation();
+    build_equation(equation_json);
   }
 
-  // TODO should this take care of anything else
-  Equation () { }
+  Equation (Equation& other) noexcept : Equation() {
+    swap(other, *this);
+  }
 
-  // TODO should this take care of anything else
   ~Equation () { }
+
+  Equation& operator=(Equation other) {
+    Equation temp(other);
+    swap(temp, *this);
+
+    return *this;
+  }
+
+  friend void swap(Equation& first, Equation& second) {
+    std::swap(first.equation_obj, second.equation_obj);
+  }
 
   // Solve the equation for a given var value
   double calculate (const double var) const {
@@ -133,7 +148,7 @@ private:
     }
   }
 
-  void build_equation () {
+  void build_equation (const json& equation_json) {
     if (equation_json.find("pieces") != equation_json.end())
       build_piece(equation_json.find("pieces").value());
     else {
@@ -166,7 +181,6 @@ private:
   }
 
   std::vector<Piece> equation_obj;
-  json equation_json;
 };
 
 #endif //JSON_EQUATION_JSON_EQUATION_H
