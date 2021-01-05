@@ -51,6 +51,15 @@ public:
     std::swap(first.equation_obj, second.equation_obj);
   }
 
+  void build_equation (const json& equation_json) {
+    equation_obj.clear();
+    if (equation_json.find("pieces") != equation_json.end())
+      build_piece(equation_json.find("pieces").value());
+    else {
+      throw std::runtime_error("[Error] JSON Equation does not contain pieces.\n");
+    }
+  }
+
   // Solve the equation for a given var value
   double calculate (const double var) const {
     const auto& eqn = get_piece_for_var(var);
@@ -145,14 +154,6 @@ private:
         piece_obj.denominator = {{0}, {1}};
       }
 
-    }
-  }
-
-  void build_equation (const json& equation_json) {
-    if (equation_json.find("pieces") != equation_json.end())
-      build_piece(equation_json.find("pieces").value());
-    else {
-      throw std::runtime_error("[Error] JSON Equation does not contain pieces.\n");
     }
   }
 
