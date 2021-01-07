@@ -35,7 +35,7 @@ public:
   }
 
   Equation (Equation& other) noexcept : Equation() {
-    swap(other, *this);
+    this->equation_obj = other.equation_obj;
   }
 
   ~Equation () { }
