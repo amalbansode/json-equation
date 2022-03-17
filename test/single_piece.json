@@ -1,0 +1,14 @@
+{
+  "pieces": [
+    {
+      "lower_bound": 0.0,
+      "lb_inclusive": true,
+      "upper_bound": 1.0,
+      "ub_inclusive": false,
+      "numerator": {
+        "powers": [0, 1],
+        "coefficients": [5, 10]
+      }
+    }
+  ]
+}
