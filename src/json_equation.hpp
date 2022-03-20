@@ -1,8 +1,28 @@
+/*
+ * json_equation
+ *
+ * Copyright (c) 2020 Amal Bansode <https://www.amalbansode.com>.
+ * Provided under the MIT License
+ *
+ * A header-only C++ library that enables the representation and computation
+ * of a system of piecewise polynomial equations (of a single variable) in JSON.
+ * The JSON must follow a valid schema as defined in the library's
+ * documentation.
+ * This library depends on:
+ * - nlohmann::json <https://github.com/nlohmann/json> for JSON deserialization.
+ * - numeric_range <https://github.com/amalbansode/numeric-range> for sorting,
+ *   validating, and indexing by pieces' bounds.
+ */
+
 #ifndef JSON_EQUATION_HPP
 #define JSON_EQUATION_HPP
 
 #include <cmath>
 
+/*
+ * Necessary dependencies for JSON deserialization and handling piece bounds,
+ * respectively. Change these paths per your project structure if needed.
+ */
 #include "../include/json.hpp"
 #include "../include/numeric_range.hpp"
 
