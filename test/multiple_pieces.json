@@ -1,0 +1,48 @@
+{
+  "pieces": [
+    {
+      "lower_bound": 0.0,
+      "lb_inclusive": true,
+      "upper_bound": 1.0,
+      "ub_inclusive": false,
+      "numerator": {
+        "powers": [0, 1],
+        "coefficients": [2, 10]
+      }
+    },
+    {
+      "lower_bound": 1.0,
+      "lb_inclusive": true,
+      "upper_bound": 2.0,
+      "ub_inclusive": true,
+      "numerator": {
+        "powers": [0, 1],
+        "coefficients": [20, -5]
+      }
+    },
+    {
+      "lower_bound": 3.0,
+      "lb_inclusive": false,
+      "upper_bound": 5.0,
+      "ub_inclusive": false,
+      "numerator": {
+        "powers": [0, 2],
+        "coefficients": [32, 4]
+      },
+      "denominator": {
+        "powers": [0, 1],
+        "coefficients": [-1, 1]
+      }
+    },
+    {
+      "lower_bound": 5.0,
+      "lb_inclusive": true,
+      "upper_bound": 5.0,
+      "ub_inclusive": true,
+      "numerator": {
+        "powers": [0],
+        "coefficients": [42]
+      }
+    }
+  ]
+}

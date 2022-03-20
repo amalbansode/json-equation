@@ -1,0 +1,12 @@
+{
+  "pieces": [
+    {
+      "upper_bound": 1.0,
+      "ub_inclusive": false,
+      "numerator": {
+        "powers": [0, 1],
+        "coefficients": [5, 10]
+      }
+    }
+  ]
+}
